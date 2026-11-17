@@ -116,3 +116,63 @@ stages:
       hash: md5
       md5: e0b86bbe724618d224f1eb30bfd06b18
       size: 6822265
+  train_candidate:
+    cmd: python -m src.models.candidate
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: af3aa2d9e55e2853f966befa50a942f1
+      size: 1794265
+    - path: data/processed/validation.csv
+      hash: md5
+      md5: 00c57d450c6cf82044069ff1efd0f3f3
+      size: 384772
+    - path: data/raw/url_features_extracted1.csv
+      hash: md5
+      md5: 151c30e7aecd15fbbe36d19d5e4b29ee
+      size: 8963838
+    - path: feature_store/feature_repo/data/split_entities.parquet
+      hash: md5
+      md5: d38e0720e25aa0735ee27efa30b48525
+      size: 6546768
+    - path: feature_store/feature_repo/data/url_features.parquet
+      hash: md5
+      md5: e0b86bbe724618d224f1eb30bfd06b18
+      size: 6822265
+    - path: feature_store/feature_repo/feature_store.yaml
+      hash: md5
+      md5: b66cfda0507831dc096683845271c6e1
+      size: 180
+    - path: feature_store/materialize.py
+      hash: md5
+      md5: 1b95d76dd61879842bce4e7aade8675a
+      size: 5826
+    - path: requirements.txt
+      hash: md5
+      md5: 2f8e3c59a6dd5944d72d6ecf32fe6ad4
+      size: 121
+    - path: src/models/candidate.py
+      hash: md5
+      md5: 98851b1b9eb3a53cbe179d3467c04722
+      size: 4094
+    - path: src/models/evaluation.py
+      hash: md5
+      md5: 061a950fdd7dfb2dd55e8745b2c145a2
+      size: 2105
+    - path: src/models/prediction.py
+      hash: md5
+      md5: a5bcae78009e20ca7394d0048262019f
+      size: 1530
+    - path: src/models/train.py
+      hash: md5
+      md5: 376f11802fee15f1593ec1a23dfb97cf
+      size: 6542
+    outs:
+    - path: models/candidates/candidate.joblib
+      hash: md5
+      md5: 7c1a92ee9658955e99c4fb496538b0e4
+      size: 623782
+    - path: reports/candidate_validation.json
+      hash: md5
+      md5: d1e380700436fc419befccb4263c1b6d
+      size: 9724
