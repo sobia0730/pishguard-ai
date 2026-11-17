@@ -1,0 +1,118 @@
+schema: '2.0'
+stages:
+  validate:
+    cmd: python -m src.data.validation
+    deps:
+    - path: data/raw/url_features_extracted1.csv
+      hash: md5
+      md5: 151c30e7aecd15fbbe36d19d5e4b29ee
+      size: 8963838
+    - path: requirements.txt
+      hash: md5
+      md5: 2f8e3c59a6dd5944d72d6ecf32fe6ad4
+      size: 121
+    - path: src/data/ingestion.py
+      hash: md5
+      md5: e115a447dc0b6fdb3a136df5007cb243
+      size: 1765
+    - path: src/data/validation.py
+      hash: md5
+      md5: dbdbcd4a2d2f4459e439220828ea0ad4
+      size: 4690
+    outs:
+    - path: data/processed/urls_clean.csv
+      hash: md5
+      md5: 5a54e515ff99ecddd58b55ed167359d3
+      size: 3823293
+    - path: reports/data_quality.json
+      hash: md5
+      md5: c6c89fbc2d9b19f5e44e4b69d65d76c3
+      size: 457
+  preprocess:
+    cmd: python -m src.features.preprocessing
+    deps:
+    - path: data/processed/urls_clean.csv
+      hash: md5
+      md5: 5a54e515ff99ecddd58b55ed167359d3
+      size: 3823293
+    - path: requirements.txt
+      hash: md5
+      md5: 2f8e3c59a6dd5944d72d6ecf32fe6ad4
+      size: 121
+    - path: src/data/validation.py
+      hash: md5
+      md5: dbdbcd4a2d2f4459e439220828ea0ad4
+      size: 4690
+    - path: src/features/preprocessing.py
+      hash: md5
+      md5: a0bad5ceb0949b9c40f111268352b7fb
+      size: 8217
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 0d9b9b5c3eea29dc10e325ba845d22c5
+      size: 361967
+    - path: data/processed/train.csv
+      hash: md5
+      md5: af3aa2d9e55e2853f966befa50a942f1
+      size: 1794265
+    - path: data/processed/validation.csv
+      hash: md5
+      md5: 00c57d450c6cf82044069ff1efd0f3f3
+      size: 384772
+    - path: reports/feature_definitions.json
+      hash: md5
+      md5: 092cc8be59e1d12c123b7f9b29863095
+      size: 2680
+  prepare_feast:
+    cmd: python -m feature_store.materialize --prepare-only
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 0d9b9b5c3eea29dc10e325ba845d22c5
+      size: 361967
+    - path: data/processed/train.csv
+      hash: md5
+      md5: af3aa2d9e55e2853f966befa50a942f1
+      size: 1794265
+    - path: data/processed/urls_clean.csv
+      hash: md5
+      md5: 5a54e515ff99ecddd58b55ed167359d3
+      size: 3823293
+    - path: data/processed/validation.csv
+      hash: md5
+      md5: 00c57d450c6cf82044069ff1efd0f3f3
+      size: 384772
+    - path: feature_store/feature_repo/entities.py
+      hash: md5
+      md5: 7f49d196822a8cd612c3fd5f4fd29b56
+      size: 414
+    - path: feature_store/feature_repo/feature_views.py
+      hash: md5
+      md5: 31434a128d4544f2cab2d803299c2601
+      size: 821
+    - path: feature_store/feature_repo/features.py
+      hash: md5
+      md5: 0d7d4aa5196f3bce530556ae70f25006
+      size: 636
+    - path: feature_store/materialize.py
+      hash: md5
+      md5: 1b95d76dd61879842bce4e7aade8675a
+      size: 5826
+    - path: requirements.txt
+      hash: md5
+      md5: 2f8e3c59a6dd5944d72d6ecf32fe6ad4
+      size: 121
+    - path: src/features/preprocessing.py
+      hash: md5
+      md5: a0bad5ceb0949b9c40f111268352b7fb
+      size: 8217
+    outs:
+    - path: feature_store/feature_repo/data/split_entities.parquet
+      hash: md5
+      md5: d38e0720e25aa0735ee27efa30b48525
+      size: 6546768
+    - path: feature_store/feature_repo/data/url_features.parquet
+      hash: md5
+      md5: e0b86bbe724618d224f1eb30bfd06b18
+      size: 6822265

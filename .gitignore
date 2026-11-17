@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+/data/raw/*.csv
+/data/url_features_extracted1.csv
+/data/processed/
+/reports/
+/models/
+/feature_store/feature_repo/data/
+/mlflow_local/

@@ -1,0 +1,57 @@
+stages:
+  validate:
+    cmd: python -m src.data.validation
+    deps:
+      - data/raw/url_features_extracted1.csv
+      - src/data/ingestion.py
+      - src/data/validation.py
+      - requirements.txt
+    outs:
+      - data/processed/urls_clean.csv
+      - reports/data_quality.json
+  preprocess:
+    cmd: python -m src.features.preprocessing
+    deps:
+      - data/processed/urls_clean.csv
+      - src/data/validation.py
+      - src/features/preprocessing.py
+      - requirements.txt
+    outs:
+      - data/processed/train.csv
+      - data/processed/validation.csv
+      - data/processed/test.csv
+      - reports/feature_definitions.json
+  prepare_feast:
+    cmd: python -m feature_store.materialize --prepare-only
+    deps:
+      - data/processed/urls_clean.csv
+      - data/processed/train.csv
+      - data/processed/validation.csv
+      - data/processed/test.csv
+      - feature_store/materialize.py
+      - feature_store/feature_repo/entities.py
+      - feature_store/feature_repo/features.py
+      - feature_store/feature_repo/feature_views.py
+      - src/features/preprocessing.py
+      - requirements.txt
+    outs:
+      - feature_store/feature_repo/data/url_features.parquet
+      - feature_store/feature_repo/data/split_entities.parquet
+  train_candidate:
+    cmd: python -m src.models.candidate
+    deps:
+      - data/raw/url_features_extracted1.csv
+      - data/processed/train.csv
+      - data/processed/validation.csv
+      - feature_store/feature_repo/data/url_features.parquet
+      - feature_store/feature_repo/data/split_entities.parquet
+      - feature_store/feature_repo/feature_store.yaml
+      - feature_store/materialize.py
+      - src/models/candidate.py
+      - src/models/train.py
+      - src/models/evaluation.py
+      - src/models/prediction.py
+      - requirements.txt
+    outs:
+      - models/candidates/candidate.joblib
+      - reports/candidate_validation.json
